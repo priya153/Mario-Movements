@@ -1,0 +1,96 @@
+PImage marioimage;
+PImage mariorun;
+PImage mariorun2;
+PImage wall;
+PImage bush;
+
+Mario myMario;
+ 
+void setup() {
+ size(500,250);
+ smooth();
+ noStroke();
+ marioimage = loadImage("marioFront.jpg"); 
+ mariorun = loadImage("marioRight.jpg");
+ mariorun2 = loadImage("marioLeft.jpg");
+ wall=loadImage("wall.jpg");
+ bush=loadImage("bush.jpg");
+ myMario = new Mario(0,140);
+}
+ 
+void draw() {
+  background(0,150,255);  
+  image(wall,0,200,width,50);
+  //image(bush,50,170);
+  //bush.resize(30,30);
+  myMario.move();
+  myMario.display(); 
+}
+ 
+//KEYBOARD INPUT
+ 
+void keyPressed() {
+  if (key == CODED) {
+     if (keyCode == LEFT) {
+       myMario.moveLeft = true;
+       marioimage = loadImage("marioLeft.jpg");
+       marioimage.resize(60,60);
+ 
+     } else if(keyCode == RIGHT) {
+       myMario.moveRight = true;
+       marioimage = loadImage("marioRight.jpg");
+       marioimage.resize(60,60);
+ 
+     } else if(keyCode == UP) {
+       myMario.moveUp = true;
+     }
+  }
+}
+ 
+void keyReleased() {
+  if (key == CODED) {
+     if (keyCode == LEFT) {
+       myMario.moveLeft = false;
+       marioimage = loadImage("marioFront.jpg");
+       marioimage.resize(60,60);
+     } else if(keyCode == RIGHT) {
+       myMario.moveRight = false;
+       marioimage = loadImage("marioFront.jpg");
+       marioimage.resize(60,60);
+     } else if(keyCode == UP) {
+       myMario.moveUp = false;
+       myMario.moveDown = true;
+     }
+  }
+}
+ 
+//PLAYER CLASS
+ 
+class Mario {
+  float xPos;
+  float yPos;
+  float speed = 2;
+  boolean moveLeft, moveRight, moveUp, moveDown = false;
+ 
+  Mario(float x_in, float y_in) {
+    xPos = x_in;
+    yPos = y_in; 
+  }
+ 
+  void display() {
+    fill(255);
+    noStroke();
+    image(marioimage, xPos, yPos);
+    marioimage.resize(50,60);
+  }
+ 
+  void move() {
+    if(moveLeft) xPos -= speed;
+    if(moveRight) xPos += speed;
+    if(moveUp) yPos -= speed*3;
+    if(moveDown) yPos += speed*2;
+    if (yPos >= 140) {
+    moveDown = false;
+    }  
+  }
+  }
